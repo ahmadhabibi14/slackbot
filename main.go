@@ -29,9 +29,9 @@ func main() {
 
 	go printCommandEvents(bot.CommandEvents())
 
-	bot.Command("my yob is <year>", &slacker.CommandDefinition{
+	bot.Command("Aku lahir tahun <year>", &slacker.CommandDefinition{
 		Description: "yob calculator",
-		Examples:    []string{"my yob is 2020"},
+		Examples:    []string{"Aku lahir tahun 2020"},
 		Handler: func(botCtx slacker.BotContext, request slacker.Request, response slacker.ResponseWriter) {
 			year := request.Param("year")
 			yob, err := strconv.Atoi(year)
@@ -39,7 +39,7 @@ func main() {
 				println("error")
 			}
 			age := 2023 - yob
-			r := fmt.Sprintf("age is %d", age)
+			r := fmt.Sprintf("Umur mu adalah %d", age)
 			response.Reply(r)
 		},
 	})
