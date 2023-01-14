@@ -12,7 +12,7 @@ import (
 
 func printCommandEvents(analyticsChannel <-chan *slacker.CommandEvent) {
 	for event := range analyticsChannel {
-		fmt.Println("Command Events")
+		fmt.Println("Command Evenets")
 		fmt.Println(event.Timestamp)
 		fmt.Println(event.Command)
 		fmt.Println(event.Parameters)
@@ -22,29 +22,27 @@ func printCommandEvents(analyticsChannel <-chan *slacker.CommandEvent) {
 }
 
 func main() {
-	os.Setenv("SLACK_BOT_TOKEN", "xoxb-4632437766550-4651878809265-PuHgFL8rUMeoVC3lqdMOu09W")
-	os.Setenv("SLACK_APP_TOKEN", "xapp-1-A04JVF23620-4639052965362-0faa3fbcc53bca85fd4e7dab4b797da4077f234bc82cc6843dc1b0b79f200d70")
+	os.Setenv("SLACK_BOT_TOKEN", "xoxb-4632437766550-4651878809265-G0F3E3MpE0LtWvHDjiwl7Nwb")
+	os.Setenv("SLACK_APP_TOKEN", "xapp-1-A04JVF23620-4637063383942-505cb6e94d5f1686546edc63bbd3f293aec011a0e316d9b51b270949ac424d8a")
 
 	bot := slacker.NewClient(os.Getenv("SLACK_BOT_TOKEN"), os.Getenv("SLACK_APP_TOKEN"))
 
 	go printCommandEvents(bot.CommandEvents())
 
-	definition := &slacker.CommandDefinition{
+	bot.Command("my yob is <year>", &slacker.CommandDefinition{
 		Description: "yob calculator",
-		Example:     "my yob is 2020",
-		Hander: func(botCtx slacker.BotContext, request slacker.Request, response slacker.ResponseWriter) {
+		Examples:    []string{"my yob is 2020"},
+		Handler: func(botCtx slacker.BotContext, request slacker.Request, response slacker.ResponseWriter) {
 			year := request.Param("year")
 			yob, err := strconv.Atoi(year)
 			if err != nil {
 				println("error")
 			}
-			age := 2021 - yob
+			age := 2023 - yob
 			r := fmt.Sprintf("age is %d", age)
-			response.Reply(r, slacker.WithThreadReply(true))
+			response.Reply(r)
 		},
-	}
-
-	bot.Command("My yob is <year>", definition)
+	})
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
